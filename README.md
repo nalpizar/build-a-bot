@@ -1,4 +1,4 @@
-# build-a-bot
+# build-a-bot [IN PROGRESS]
 
 ## Project setup
 ```
