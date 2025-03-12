@@ -6,9 +6,10 @@ module.exports = {
   },
   extends: ['eslint:recommended', 'plugin:vue/essential', 'plugin:prettier/recommended'],
   rules: {
-    'prettier/prettier': ['error', { endOfLine: 'auto' }],
+    'prettier/prettier': ['error', { endOfLine: 'auto', arrowParens: 'avoid' }],
     'comma-dangle': ['error', 'always-multiline'],
     'vue/no-multiple-template-root': 'off',
+    'arrow-parens': ['error', 'as-needed'],
   },
   parserOptions: {
     parser: '@babel/eslint-parser',

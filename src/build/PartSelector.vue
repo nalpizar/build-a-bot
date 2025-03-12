@@ -8,18 +8,23 @@
 </template>
 
 <script setup>
-import { computed, ref } from 'vue';
+import { computed, ref, onUpdated } from 'vue';
 
 const props = defineProps({
   parts: { type: Array, required: true },
   position: {
     type: String,
     required: true,
-    validator: (value) => ['top', 'left', 'center', 'right', 'bottom'].includes(value),
+    validator: value => ['top', 'left', 'center', 'right', 'bottom'].includes(value),
   },
 });
+const emit = defineEmits(['partSelected']);
 const selectedPartIndex = ref(0);
 const selectedPart = computed(() => props.parts[selectedPartIndex.value]);
+
+emit('partSelected', selectedPart);
+
+onUpdated(() => emit('partSelected', selectedPart));
 
 function getPreviousValidIndex(index, length) {
   const deprecatedIndex = index - 1;
@@ -33,7 +38,6 @@ function getNextValidIndex(index, length) {
 
 const selectNextPart = () => {
   selectedPartIndex.value = getNextValidIndex(selectedPartIndex.value, props.parts.length);
-  console.log(selectedPart.value);
 };
 
 const selectPreviousPart = () => {
