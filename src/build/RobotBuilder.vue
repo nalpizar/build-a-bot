@@ -2,36 +2,36 @@
   <div class="content">
     <button class="add-to-cart" @click="addToCart()">Add to Cart</button>
     <div class="top-row">
-      <div class="top part">
+      <div :class="[saleBorderClass, 'top', 'part']">
         <div class="robot-name">
-          {{ selectedRobot.head.title }}
-          <span v-if="selectedRobot.head.onSale" class="sale">Sale!</span>
+          {{ selectedRobot.head?.title }}
+          <span v-if="selectedRobot.head?.onSale" class="sale">Sale!</span>
         </div>
-        <img :src="selectedRobot.head.imageUrl" alt="head" />
+        <img :src="selectedRobot.head?.imageUrl" alt="head" />
         <button @click="selectPreviousHead()" class="prev-selector">&#9668;</button>
         <button @click="selectNextHead()" class="next-selector">&#9658;</button>
       </div>
     </div>
     <div class="middle-row">
       <div class="left part">
-        <img :src="selectedRobot.leftArm.imageUrl" alt="left arm" />
+        <img :src="selectedRobot.leftArm?.imageUrl" alt="left arm" />
         <button @click="selectPreviousLeftArm()" class="prev-selector">&#9650;</button>
         <button @click="selectNextLeftArm()" class="next-selector">&#9660;</button>
       </div>
       <div class="center part">
-        <img :src="selectedRobot.torso.imageUrl" alt="torso" />
+        <img :src="selectedRobot.torso?.imageUrl" alt="torso" />
         <button @click="selectPreviousTorso()" class="prev-selector">&#9668;</button>
         <button @click="selectNextTorso()" class="next-selector">&#9658;</button>
       </div>
       <div class="right part">
-        <img :src="selectedRobot.rightArm.imageUrl" alt="right arm" />
+        <img :src="selectedRobot.rightArm?.imageUrl" alt="right arm" />
         <button @click="selectPreviousRightArm()" class="prev-selector">&#9650;</button>
         <button @click="selectNextRightArm()" class="next-selector">&#9660;</button>
       </div>
     </div>
     <div class="bottom-row">
       <div class="bottom part">
-        <img :src="selectedRobot.base.imageUrl" alt="base" />
+        <img :src="selectedRobot.base?.imageUrl" alt="base" />
         <button @click="selectPreviousBase()" class="prev-selector">&#9668;</button>
         <button @click="selectNextBase()" class="next-selector">&#9658;</button>
       </div>
@@ -39,15 +39,15 @@
     <div>
       <h1>Cart</h1>
       <table>
-        <thread>
+        <thead>
           <tr>
             <th>Robot</th>
             <th class="cost">Cost</th>
           </tr>
-        </thread>
+        </thead>
         <tbody>
           <tr v-for="(robot, index) in cart" :key="index">
-            <td>{{ robot.head.title }}</td>
+            <td>{{ robot.head?.title }}</td>
             <td class="cost">{{ toCurrency(robot.cost) }}</td>
           </tr>
         </tbody>
@@ -57,7 +57,7 @@
 </template>
 
 <script setup>
-import { computed, ref } from 'vue';
+import { computed, ref, onMounted } from 'vue';
 import parts from '../data/parts';
 import { toCurrency } from '@/shared/formatters';
 
@@ -79,6 +79,10 @@ const selectedRightArmIndex = ref(0);
 const selectedBaseIndex = ref(0);
 const cart = ref([]);
 
+onMounted(() => {
+  console.log('RobotBuilder mounted');
+});
+
 const selectedRobot = computed(() => ({
   head: availableParts.heads[selectedHeadIndex.value],
   leftArm: availableParts.arms[selectedLeftArmIndex.value],
@@ -86,6 +90,8 @@ const selectedRobot = computed(() => ({
   rightArm: availableParts.arms[selectedRightArmIndex.value],
   base: availableParts.bases[selectedBaseIndex.value],
 }));
+
+const saleBorderClass = computed(() => (selectedRobot.value.head?.onSale ? 'sale-border' : ''));
 
 const addToCart = () => {
   const robot = selectedRobot.value;
@@ -150,6 +156,46 @@ const selectPreviousBase = () => {
     availableParts.bases.length,
   );
 };
+};
+const selectPreviousLeftArm = () => {
+  selectedLeftArmIndex.value = getPreviousValidIndex(
+    selectedLeftArmIndex.value,
+    availableParts.arms.length,
+  );
+};
+const selectNextTorso = () => {
+  selectedTorsoIndex.value = getNextValidIndex(
+    selectedTorsoIndex.value,
+    availableParts.torsos.length,
+  );
+};
+const selectPreviousTorso = () => {
+  selectedTorsoIndex.value = getPreviousValidIndex(
+    selectedTorsoIndex.value,
+    availableParts.torsos.length,
+  );
+};
+const selectNextRightArm = () => {
+  selectedRightArmIndex.value = getNextValidIndex(
+    selectedRightArmIndex.value,
+    availableParts.arms.length,
+  );
+};
+const selectPreviousRightArm = () => {
+  selectedRightArmIndex.value = getPreviousValidIndex(
+    selectedRightArmIndex.value,
+    availableParts.arms.length,
+  );
+};
+const selectNextBase = () => {
+  selectedBaseIndex.value = getNextValidIndex(selectedBaseIndex.value, availableParts.bases.length);
+};
+const selectPreviousBase = () => {
+  selectedBaseIndex.value = getPreviousValidIndex(
+    selectedBaseIndex.value,
+    availableParts.bases.length,
+  );
+};
 //  #endregion
 </script>
 
@@ -159,6 +205,10 @@ const selectPreviousBase = () => {
   width: 200px;
   height: 200px;
   border: 3px solid #aaa;
+}
+
+.sale-border {
+  border: 3px solid red;
 }
 
 .part img {
