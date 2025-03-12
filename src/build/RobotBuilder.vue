@@ -156,6 +156,46 @@ const selectPreviousBase = () => {
     availableParts.bases.length,
   );
 };
+};
+const selectPreviousLeftArm = () => {
+  selectedLeftArmIndex.value = getPreviousValidIndex(
+    selectedLeftArmIndex.value,
+    availableParts.arms.length,
+  );
+};
+const selectNextTorso = () => {
+  selectedTorsoIndex.value = getNextValidIndex(
+    selectedTorsoIndex.value,
+    availableParts.torsos.length,
+  );
+};
+const selectPreviousTorso = () => {
+  selectedTorsoIndex.value = getPreviousValidIndex(
+    selectedTorsoIndex.value,
+    availableParts.torsos.length,
+  );
+};
+const selectNextRightArm = () => {
+  selectedRightArmIndex.value = getNextValidIndex(
+    selectedRightArmIndex.value,
+    availableParts.arms.length,
+  );
+};
+const selectPreviousRightArm = () => {
+  selectedRightArmIndex.value = getPreviousValidIndex(
+    selectedRightArmIndex.value,
+    availableParts.arms.length,
+  );
+};
+const selectNextBase = () => {
+  selectedBaseIndex.value = getNextValidIndex(selectedBaseIndex.value, availableParts.bases.length);
+};
+const selectPreviousBase = () => {
+  selectedBaseIndex.value = getPreviousValidIndex(
+    selectedBaseIndex.value,
+    availableParts.bases.length,
+  );
+};
 //  #endregion
 </script>
 
